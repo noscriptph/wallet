@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/img_person"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            app:layout_constrainedHeight="true"
+            android:adjustViewBounds="true"
+            android:layout_marginStart="16dp"
+            android:layout_gravity="center"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="16dp"
+            android:layout_weight="2.8"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/nombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/name_person"
+                android:textColor="@color/primary_text"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/paisId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primary_text"
+                android:text="Pais" />
+
+            <TextView
+                android:id="@+id/cuenta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primary_text"
+                android:text="cuenta" />
+
+            <TextView
+                android:id="@+id/saldo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primary_text"
+                android:text="saldo" />
+
+            <TextView
+                android:id="@+id/aceptaDepositos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/acepta_depositos"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/noAceptaDepositos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/no_acepta_depositos"
+                android:visibility="invisible" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/enviar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/baseline_arrow_forward"
+            android:backgroundTint="@color/accent_color" />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

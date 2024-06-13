@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">WalletApp</string>
+    <string name="take_game">Quiero este juego</string>
+    <string name="metacritic">Valoración de la crítica</string>
+    <string name="price">Precio Normal</string>
+    <string name="name_person">Nombre</string>
+    <string name="wallet">Wallet</string>
+    <string name="fecha">fecha</string>
+    <string name="_0">0</string>
+    <string name="nombre_cliente">nombre cliente</string>
+    <string name="acepta_depositos">Cuenta con disponibilidad de deposito</string>
+    <string name="no_acepta_depositos"> Cuenta no disponible para transferencias</string>
+</resources>
