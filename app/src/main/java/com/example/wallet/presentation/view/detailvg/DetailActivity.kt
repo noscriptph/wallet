@@ -16,78 +16,99 @@ import com.example.wallet.presentation.viewmodel.detailwallet.DetailViewModel
 import com.example.wallet.presentation.viewmodel.detailwallet.ViewModelDetailFactory
 import com.squareup.picasso.Picasso
 
+/**
+ * Activity que muestra los detalles de una persona específica.
+ */
 class DetailActivity : AppCompatActivity() {
 
+    // Enlace a la vista de detalle
     private lateinit var bindingDetail: ActivityDetailBinding
 
+    /**
+     * Método que se llama cuando se crea la actividad.
+     * @param savedInstanceState Estado anterior de la actividad, si existe.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Inflar el layout de la actividad
         bindingDetail = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(bindingDetail.root)
 
-        val idPeople  = intent.getLongExtra("ID_PEOPLE", -1)
-        if( idPeople == -1L){
+        // Obtener el ID de la persona desde el Intent
+        val idPeople = intent.getLongExtra("ID_PEOPLE", -1)
+        if (idPeople == -1L) {
             finish()
         }
 
+        // Inicializar los componentes necesarios para el ViewModel
         val apiService = RetrofitHelper.getRetrofit().create(WalletService::class.java)
         val dataBase = AppDataBase.getDatabase(application)
-        val repository = WalletImpl(apiService,dataBase.peopleDAO())
+        val repository = WalletImpl(apiService, dataBase.peopleDAO())
         val useCase = WalletUseCase(repository)
         val viewModelFactory = ViewModelDetailFactory(useCase)
         val viewModel = ViewModelProvider(this, viewModelFactory)[DetailViewModel::class.java]
 
-
+        // Obtener los detalles de la persona por ID
         viewModel.getDetailPeopleById(idPeople)
 
-        viewModel.peopleDetailLV.observe(this){
+        // Observador para actualizar la UI con los detalles de la persona
+        viewModel.peopleDetailLV.observe(this) {
 
-            with(it){
+            with(it) {
+                // Actualizar los campos de la UI con los datos de la persona
                 bindingDetail.nombre.text = nombre
                 bindingDetail.paisId.text = cuenta
                 bindingDetail.tipoDeCuenta.text = pais
                 bindingDetail.saldo.text = saldo.toString()
-                if(depositos==true) {
+                if (depositos == true) {
                     bindingDetail.aceptaDepositos.visibility = View.VISIBLE
                     bindingDetail.noAceptaDepositos.visibility = View.GONE
-                }else{
+                } else {
                     bindingDetail.aceptaDepositos.visibility = View.GONE
-                    bindingDetail.noAceptaDepositos.visibility = View.VISIBLE}
+                    bindingDetail.noAceptaDepositos.visibility = View.VISIBLE
+                }
 
-
-
+                // Cargar la imagen de la persona usando Picasso
                 Picasso
                     .get()
                     .load(imagenLink)
                     .into(bindingDetail.imgPeople)
 
+                // Configurar el botón para enviar un correo electrónico
                 bindingDetail.btnSendEmail.setOnClickListener {
                     sendEmailWithPeople(nombre)
                 }
             }
         }
     }
-    private fun sendEmailWithPeople(namePeople: String){
+
+    /**
+     * Método para enviar un correo electrónico con los detalles de la persona.
+     * @param namePeople Nombre de la persona.
+     */
+    private fun sendEmailWithPeople(namePeople: String) {
         val intent = Intent(Intent.ACTION_SEND)
         intent.type = "message/rfc822"
         intent.putExtra(Intent.EXTRA_EMAIL, arrayOf("agus.romero.salazar@gmail.com"))
-        intent.putExtra(Intent.EXTRA_SUBJECT, "Formulario de Contacto " +namePeople)
-        intent.putExtra(Intent.EXTRA_TEXT,"Hola\n" +
-                "Somos parte del equipo de contacto de Wallet, Te animas a que podamos\n" +
-                "contactarte, para poder recibir información importante.\n" +
-                "Número de Contacto: _________\n" +
-                "Gracias")
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Formulario de Contacto " + namePeople)
+        intent.putExtra(
+            Intent.EXTRA_TEXT, "Hola\n" +
+                    "Somos parte del equipo de contacto de Wallet, Te animas a que podamos\n" +
+                    "contactarte, para poder recibir información importante.\n" +
+                    "Número de Contacto: _________\n" +
+                    "Gracias"
+        )
 
-        if(intent.resolveActivity(packageManager) != null ){
-
+        // Verificar si hay una aplicación de correo instalada
+        if (intent.resolveActivity(packageManager) != null) {
             startActivity(Intent.createChooser(intent, "Enviar por correo"))
-        } else
+        } else {
             Toast.makeText(
                 this,
                 "Debes tener instalada una aplicación de correo",
                 Toast.LENGTH_LONG
             ).show()
-
+        }
     }
 }
